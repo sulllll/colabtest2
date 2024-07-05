@@ -2,12 +2,12 @@ name: Test Schedule Workflow
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: "*/5 * * * *" # 5분마다 실행
 
 jobs:
   test-schedule:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Print current time
         run: echo "Current time: $(date)"
