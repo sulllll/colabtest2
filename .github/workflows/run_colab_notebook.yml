@@ -1,36 +1,31 @@
 name: Test Schedule Workflow
-
 on:
   push:
     branches:
       - main
   schedule:
     - cron: '*/5 * * * *' # 5분마다 실행
-
 jobs:
   test-schedule:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.8'
-
       - name: Install dependencies
-        run: pip install pytz
-
+        run: |
+          pip install pytz
       - name: Print current time
         run: |
           python -c "
-          import pytz
-          from datetime import datetime
-          import os
-          korean_tz = pytz.timezone('Asia/Seoul')
-          current_time = datetime.now(korean_tz).strftime('%Y-%m-%d %H:%M:%S')
-          print(f'Current time in Korea: {current_time}')
-          print(f'{os.getenv('GITHUB_RUN_NUMBER')} 번째 실행 중...')
+import pytz
+from datetime import datetime
+import os
+korean_tz = pytz.timezone('Asia/Seoul')
+current_time = datetime.now(korean_tz).strftime('%Y-%m-%d %H:%M:%S')
+print(f'Current time in Korea: {current_time}')
+print(f'{os.getenv(\"GITHUB_RUN_NUMBER\")} 번째 실행 중...')
           "
