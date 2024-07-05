@@ -1,6 +1,7 @@
 import json
 import os
 import gspread
+from google.colab import auth
 from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -12,7 +13,11 @@ from bs4 import BeautifulSoup
 import time
 
 # 구글 스프레드시트 인증 및 시트 열기
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+auth.authenticate_user()
+scope = [
+    "https://spreadsheets.google.com/feeds",
+    "https://www.googleapis.com/auth/drive",
+]
 creds = ServiceAccountCredentials.from_json_keyfile_name('service_account.json', scope)
 client = gspread.authorize(creds)
 spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1-nbdmcfrw9OjLtJ7_21-XhOa25hddHrcy2qLVS7assc/edit?usp=sharing'
