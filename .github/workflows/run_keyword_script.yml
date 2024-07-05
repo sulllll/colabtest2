@@ -1,32 +1,35 @@
 name: Run Keyword Script
-
 on:
   push:
     branches:
       - main
   schedule:
-    - cron: '*/10 * * * *' # 매 5분마다 실행
-
+    - cron: '*/10 * * * *'  # 매 10분마다 실행
 jobs:
   run-script:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.8'
-
+      - name: Install Chrome and ChromeDriver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          CHROME_VERSION=$(google-chrome --version | cut -d ' ' -f 3 | cut -d '.' -f 1)
+          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+          wget "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
       - name: Install dependencies
         run: |
           pip install selenium gspread oauth2client beautifulsoup4 google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client requests
-
       - name: Run Keyword Script
         env:
           GDRIVE_SERVICE_ACCOUNT_KEY: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}
         run: |
-          echo "$GDRIVE_SERVICE_ACCOUNT_KEY" > service_account.json
-          cat service_account.json
           python keyword_script.py
