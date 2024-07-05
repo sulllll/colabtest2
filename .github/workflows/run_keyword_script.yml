@@ -1,36 +1,24 @@
 name: Run Keyword Script
+
 on:
   push:
     branches:
       - main
   schedule:
-    - cron: '*/10 * * * *'  # 매 10분마다 실행
+    - cron: '*/60 * * * *' # 매 5분마다 실행
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.8'
-      - name: Install Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-      - name: Install ChromeDriver
-        run: |
-          CHROME_VERSION=$(google-chrome --version | awk '{ print $3 }' | awk -F'.' '{ print $1"."$2"."$3 }')
-          echo "Chrome version: $CHROME_VERSION"
-          CHROMEDRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}")
-          echo "ChromeDriver version: $CHROMEDRIVER_VERSION"
-          wget -N "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -P ~/
-          unzip -o ~/chromedriver_linux64.zip -d ~/
-          rm ~/chromedriver_linux64.zip
-          sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
-          sudo chmod +x /usr/local/bin/chromedriver
-          chromedriver --version
+
       - name: Install dependencies
         run: |
           pip install selenium gspread oauth2client beautifulsoup4 google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client requests
@@ -38,4 +26,6 @@ jobs:
         env:
           GDRIVE_SERVICE_ACCOUNT_KEY: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}
         run: |
+          echo "$GDRIVE_SERVICE_ACCOUNT_KEY" > service_account.json
+          cat service_account.json
           python keyword_script.py
