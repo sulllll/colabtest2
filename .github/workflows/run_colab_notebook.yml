@@ -2,7 +2,7 @@ name: Test Schedule Workflow
 
 on:
   schedule:
-    - cron: '*/1 * * * *' # 5분마다 실행
+    - cron: '*/1 * * * *' # 매 1분마다 실행
 
 jobs:
   test-schedule:
@@ -11,5 +11,3 @@ jobs:
     steps:
       - name: Print current time
         run: 'echo "Current time: $(date)"'
-
-
