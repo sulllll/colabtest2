@@ -10,7 +10,6 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,4 +24,8 @@ jobs:
           pip install selenium gspread oauth2client beautifulsoup4 google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client requests
 
       - name: Run Keyword Script
-        run: python keyword_script.py
+        env:
+          GDRIVE_SERVICE_ACCOUNT_KEY: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}
+        run: |
+          echo "$GDRIVE_SERVICE_ACCOUNT_KEY" > service_account.json
+          python keyword_script.py
