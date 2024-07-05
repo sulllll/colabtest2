@@ -32,3 +32,4 @@ jobs:
           print(f'Current time in Korea: {current_time}')
           print(f'{os.getenv('GITHUB_RUN_NUMBER')} 번째 실행 중...')
           "
+          
