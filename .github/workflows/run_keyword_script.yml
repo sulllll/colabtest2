@@ -4,7 +4,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '*/60 * * * *'  # 매 10분마다 실행
+    - cron: '*/80 * * * *'  # 매 10분마다 실행
 jobs:
   run-script:
     runs-on: ubuntu-latest
