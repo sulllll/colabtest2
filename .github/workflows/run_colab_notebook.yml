@@ -1,9 +1,6 @@
 name: Test Schedule Workflow
 
 on:
-  push:
-    branches:
-      - main
   schedule:
     - cron: '*/1 * * * *' # 1분마다 실행
 
