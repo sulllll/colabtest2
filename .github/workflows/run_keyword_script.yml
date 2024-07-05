@@ -22,7 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install selenium gspread oauth2client beautifulsoup4 google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+          pip install selenium gspread oauth2client beautifulsoup4 google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client requests
 
       - name: Run Keyword Script
         run: python keyword_script.py
